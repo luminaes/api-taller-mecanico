@@ -5,3 +5,4 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+repuestos = Repuesto.create(tipo:"espejo",marca:"renault",modelo:"z200",precio:300,stock:5)

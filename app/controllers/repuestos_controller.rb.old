@@ -15,13 +15,7 @@ class RepuestosController < ApplicationController
 
   # POST /repuestos
     def create
-    @repuesto = Repuesto.new(
-      tipo:params[:tipo],
-      marca:params[:marca],
-      modelo:params[:modelo],
-      precio:params[:precio],
-      stock:params[:stock]
-    )
+    @repuesto = Repuesto.new(repuesto_params)
 
     if @repuesto.save
       render json: @repuesto, status: :created, location: @repuesto
@@ -32,13 +26,7 @@ class RepuestosController < ApplicationController
 
   # PATCH/PUT /repuestos/1
   def update
-    if @repuesto.update(
-      tipo:params[:tipo],
-      marca:params[:marca],
-      modelo:params[:modelo],
-      precio:params[:precio],
-      stock:params[:stock]  
-    )
+    if @repuesto.update(repuesto_params)
       render json: @repuesto
     else
       render json: @repuesto.errors, status: :unprocessable_entity
