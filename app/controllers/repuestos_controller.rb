@@ -63,3 +63,4 @@ class RepuestosController < ApplicationController
       params.fetch(:repuesto, {})
     end
 end
+#
