@@ -25,7 +25,9 @@ default: &default
 
 development:
   <<: *default
-  database: api_taller_mecanico_development
+  url: postgres://inskovcelhsrio:cbd5be0654d1eafa513b2109f1475ec05d0212e1e1c242448c54c5ae51f8b816@ec2-52-3-130-181.compute-1.amazonaws.com:5432/d7idhacpu54ihc
+
+  #database: api_taller_mecanico_development
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -83,6 +85,10 @@ test:
 #
 production:
   <<: *default
-  database: api_taller_mecanico_production
-  username: api_taller_mecanico
-  password: <%= ENV['API_TALLER_MECANICO_DATABASE_PASSWORD'] %>
+  #database: api_taller_mecanico_production
+  #username: api_taller_mecanico
+  #password: <%= ENV['API_TALLER_MECANICO_DATABASE_PASSWORD'] %>
+  #database: postgresql-angular-91012
+  #username: inskovcelhsrio
+  #password: cbd5be0654d1eafa513b2109f1475ec05d0212e1e1c242448c54c5ae51f8b816
+  url: postgres://inskovcelhsrio:cbd5be0654d1eafa513b2109f1475ec05d0212e1e1c242448c54c5ae51f8b816@ec2-52-3-130-181.compute-1.amazonaws.com:5432/d7idhacpu54ihc

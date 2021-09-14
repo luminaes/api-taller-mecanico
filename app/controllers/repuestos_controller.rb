@@ -15,12 +15,13 @@ class RepuestosController < ApplicationController
 
   # POST /repuestos
     def create
+      repuesto=JSON.parse(request.body.read())
     @repuesto = Repuesto.new(
-      tipo:params[:tipo],
-      marca:params[:marca],
-      modelo:params[:modelo],
-      precio:params[:precio],
-      stock:params[:stock]
+      tipo:repuesto["tipo"],
+      marca:repuesto["marca"],
+      modelo:repuesto["modelo"],
+      precio:repuesto["precio"],
+      stock:repuesto["stock"]
     )
 
     if @repuesto.save
@@ -32,12 +33,13 @@ class RepuestosController < ApplicationController
 
   # PATCH/PUT /repuestos/1
   def update
+    repuesto=JSON.parse(request.body.read())
     if @repuesto.update(
-      tipo:params[:tipo],
-      marca:params[:marca],
-      modelo:params[:modelo],
-      precio:params[:precio],
-      stock:params[:stock]  
+      tipo:repuesto["tipo"],
+      marca:repuesto["marca"],
+      modelo:repuesto["modelo"],
+      precio:repuesto["precio"],
+      stock:repuesto["stock"] 
     )
       render json: @repuesto
     else
