@@ -47,7 +47,7 @@ class RepuestosController < ApplicationController
     end
   end
 
-  # DELETE /repuestos/1
+  # DELETE /repuestos/2
   def destroy
     @repuesto.destroy
   end
@@ -63,4 +63,3 @@ class RepuestosController < ApplicationController
       params.fetch(:repuesto, {})
     end
 end
-#
