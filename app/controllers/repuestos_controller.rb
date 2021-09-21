@@ -34,6 +34,7 @@ class RepuestosController < ApplicationController
   # PATCH/PUT /repuestos/1
   def update
     repuesto=JSON.parse(request.body.read())
+    puts repuestos
     if @repuesto.update(
       tipo:repuesto["tipo"],
       marca:repuesto["marca"],
@@ -63,3 +64,5 @@ class RepuestosController < ApplicationController
       params.fetch(:repuesto, {})
     end
 end
+
+# Parameters: {"tipo"=>"espejo", "marca"=>"bmw", "modelo"=>"z200", "precio"=>"300", "stock"=>"100", "repuesto"=>{"tipo"=>"espejo", "marca"=>"bmw", "modelo"=>"z200", "precio"=>"300", "stock"=>"100"}}
