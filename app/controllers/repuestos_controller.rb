@@ -3,10 +3,16 @@ class RepuestosController < ApplicationController
 
   # GET /repuestos
   def index
+    #response.set_header('a','b')
+    headers['Access-Control-Allow-Origin'] = '*'
+    headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+    headers['Access-Control-Allow-Headers'] = '*'
     @repuestos = Repuesto.all
 
     render json: @repuestos
   end
+
+
 
   # GET /repuestos/1
   def show
@@ -34,7 +40,6 @@ class RepuestosController < ApplicationController
   # PATCH/PUT /repuestos/1
   def update
     repuesto=JSON.parse(request.body.read())
-    puts repuestos
     if @repuesto.update(
       tipo:repuesto["tipo"],
       marca:repuesto["marca"],
