@@ -20,25 +20,26 @@ class RepuestosController < ApplicationController
     def create
       headers_access_control
       repuesto=JSON.parse(request.body.read())
-    @repuesto = Repuesto.new(
-      tipo:repuesto["tipo"],
-      marca:repuesto["marca"],
-      modelo:repuesto["modelo"],
-      precio:repuesto["precio"],
-      stock:repuesto["stock"]
-    )
-
-    if @repuesto.save
-      render json: @repuesto, status: :created, location: @repuesto
-    else
-      render json: @repuesto.errors, status: :unprocessable_entity
+      if  validations(repuesto) == true
+      @repuesto = Repuesto.new(
+        tipo:repuesto["tipo"],
+        marca:repuesto["marca"],
+        modelo:repuesto["modelo"],
+        precio:repuesto["precio"],
+        stock:repuesto["stock"]
+      )
+      
+      if @repuesto.save
+        render json: @repuesto, status: :created, location: @repuesto
+      else
+        render json: @repuesto.errors, status: :unprocessable_entity
+      end
     end
   end
 
   # PATCH/PUT /repuestos/1
   def update
     headers_access_control
-    repuesto=JSON.parse(request.body.read())
     if @repuesto.update(
       tipo:repuesto["tipo"],
       marca:repuesto["marca"],
@@ -77,4 +78,28 @@ def headers_access_control
   headers['Access-Control-Allow-Headers'] = '*'
 end
 
+#validations
+def validations(repuesto)
+  tipo = repuesto['tipo']
+  marca = repuesto['marca']
+  modelo = repuesto['modelo']
+  precio = repuesto['precio']
+  stock = repuesto['stock']
+  valid false
+  #aca van procedimientos validaciones
+  #probar devover mensaje de error
+end  
+
+def valid_tipo(tipo)
+    if repuesto['tipo'] == repuesto['tipo'].capitalize
+      return true
+    else
+    return false  
+    end
+end
+
 # Parameters: {"tipo"=>"espejo", "marca"=>"bmw", "modelo"=>"z200", "precio"=>"300", "stock"=>"100", "repuesto"=>{"tipo"=>"espejo", "marca"=>"bmw", "modelo"=>"z200", "precio"=>"300", "stock"=>"100"}}
+
+hola = "string"
+hola = hola.capitalize
+puts hola
