@@ -78,28 +78,114 @@ def headers_access_control
   headers['Access-Control-Allow-Headers'] = '*'
 end
 
-#validations
+#validations, validate if the hash meets the requirements
 def validations(repuesto)
   tipo = repuesto['tipo']
   marca = repuesto['marca']
   modelo = repuesto['modelo']
   precio = repuesto['precio']
   stock = repuesto['stock']
-  valid false
-  #aca van procedimientos validaciones
+  v = Array.new(5,false)
+    #aca van procedimientos validaciones
   #probar devover mensaje de error
+  v[0]=valid_tipo(tipo)
+  if v[0]==true 
+    v[1]=valid_marca(tipo,marca)
+    v[2]=!modelo.empty? 
+    v[3]= valid_precio(precio)
+    v[4]= valid_stock(stock)
+  end
+  if v[0] == true && v[1] == true && v[2] == true && v[3] == true && v[4] == true 
+    return true
+  else 
+    return false
+  end  
 end  
 
+def valid_capital(capital)
+  if capital == capital.capitalize
+    return true
+  else 
+    return false
+  end  
+end
+
 def valid_tipo(tipo)
-    if repuesto['tipo'] == repuesto['tipo'].capitalize
-      return true
-    else
-    return false  
+  if tipo== ('Parabrisas' ||'Espejo retrovisor' || 'Limpiaparabrisas' || 'Radiador')
+    return true
+  else
+    return false
+  end  
+end
+
+def valid_marca(tipo,marca)
+    if tipo == 'Parabrisas'
+      if marca == ('Citroen' || 'Swift')
+        return true 
+      else 
+        return false 
+      end 
+    end
+
+    if tipo == 'Espejo retrovisor'
+      if marca == ('Lael' || 'Vitaloni')
+        return true 
+      else 
+        return false 
+      end
+    end 
+
+    if tipo == 'Limpiaparabrisas'
+      if marca == ('Lael' || 'Bosch')
+        return true 
+      else 
+        return false 
+      end 
+    end
+
+    if tipo == 'Radiador'
+      if marca == ('Citroen' || 'Konas')
+        return true 
+      else 
+        return false 
+      end 
     end
 end
 
-# Parameters: {"tipo"=>"espejo", "marca"=>"bmw", "modelo"=>"z200", "precio"=>"300", "stock"=>"100", "repuesto"=>{"tipo"=>"espejo", "marca"=>"bmw", "modelo"=>"z200", "precio"=>"300", "stock"=>"100"}}
+def valid_precio(precio)
+  if precio.to_f > 0
+    return true
+  else 
+    return false
+  end
+end
 
-hola = "string"
-hola = hola.capitalize
-puts hola
+def valid_stock(stock)
+  stock = stock.to_i
+  if stock >0 && stock <=999
+    return true
+  else
+    return false
+  end
+end
+
+
+
+=begin
+tipo: Parabrisas, Espejo retrovisor, Limpiaparabrisas, Radiador (todos con mayuscula en la primera letra)
+marca: ver anexo marca, siempre plrimera letra mayuscula
+modelo: solo que sea string
+precio: que sea float superior a 0
+stock: que no sea superior a 999 ni menor a 0
+marcas:
+
+Parabrisas:
+Citroen, Swift
+Espejo retrovisor:
+Lael, Vitaloni
+Limpiaparabrisas:
+Lael, bosch 
+Radiador:
+Citroen, Konas
+=end
+# Parameters: {"tipo"=>"espejo", "marca"=>"bmw", "modelo"=>"z200", "precio"=>"300", "stock"=>"100", "repuesto"=>{"tipo"=>"espejo", "marca"=>"bmw", "modelo"=>"z200", "precio"=>"300", "stock"=>"100"}}
