@@ -41,17 +41,19 @@ class RepuestosController < ApplicationController
   def update
     repuesto=JSON.parse(request.body.read())
     headers_access_control
-    if @repuesto.update(
-      tipo:repuesto["tipo"],
-      marca:repuesto["marca"],
-      modelo:repuesto["modelo"],
-      precio:repuesto["precio"],
-      stock:repuesto["stock"] 
-    )
-      render json: @repuesto
-    else
-      render json: @repuesto.errors, status: :unprocessable_entity
-    end
+    if  validations(repuesto) == true
+      if @repuesto.update(
+        tipo:repuesto["tipo"],
+        marca:repuesto["marca"],
+        modelo:repuesto["modelo"],
+        precio:repuesto["precio"],
+        stock:repuesto["stock"] 
+      )
+        render json: @repuesto
+      else
+        render json: @repuesto.errors, status: :unprocessable_entity
+      end
+    end  
   end
 
   # DELETE /repuestos/2
