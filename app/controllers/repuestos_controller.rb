@@ -39,6 +39,7 @@ class RepuestosController < ApplicationController
 
   # PATCH/PUT /repuestos/1
   def update
+    repuesto=JSON.parse(request.body.read())
     headers_access_control
     if @repuesto.update(
       tipo:repuesto["tipo"],
