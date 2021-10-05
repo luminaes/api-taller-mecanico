@@ -1,4 +1,4 @@
 class Repuesto < ApplicationRecord
-    
-   # validates :body, presence: true
+    validates_with JsonValidator
+   #validates :body, presence: true
 end

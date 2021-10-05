@@ -17,10 +17,10 @@ class RepuestosController < ApplicationController
   end
 
   # POST /repuestos
-    def create
+  def create
       headers_access_control
       repuesto=JSON.parse(request.body.read())
-      if  validations(repuesto) == true
+    
       @repuesto = Repuesto.new(
         tipo:repuesto["tipo"],
         marca:repuesto["marca"],
@@ -28,12 +28,14 @@ class RepuestosController < ApplicationController
         precio:repuesto["precio"],
         stock:repuesto["stock"]
       )
-      
+    if  validations(repuesto) == true 
       if @repuesto.save
         render json: @repuesto, status: :created, location: @repuesto
       else
         render json: @repuesto.errors, status: :unprocessable_entity
       end
+    else 
+      render json: @repuesto.errors, status: :bad_request
     end
   end
 
