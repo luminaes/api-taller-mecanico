@@ -19,7 +19,8 @@ class RepuestosController < ApplicationController
     if modelo !=nil
       conditions.merge!(modelo: modelo)
     end
-    if tipo && marca && modelo == nil
+    Rails.logger.info "conditions es #{conditions}" 
+    if conditions == nil
       Rails.logger.info " index all"
       @repuesto = Repuesto.all
     else
@@ -32,11 +33,23 @@ class RepuestosController < ApplicationController
 
   # GET /repuestos/1
   def show
+    headers_access_control 
     Rails.logger.info "el id param es#{params[:id]}"  
-    id_val=params[:id]
+    Rails.logger.info "entro"
+    @repuesto = Repuesto.where(id: params["id"])
     render json: @repuesto
   end
 
+
+
+=begin
+  # GET /repuestos/1
+  def show
+    Rails.logger.info "el id param es#{params[:id]}" 
+    id_val=params[:id]
+    render json: @repuesto
+  end
+=end
   #GET /repuestos/show_type
   def show_type
     Rails.logger.info "paso por show tipe"
