@@ -1,26 +1,57 @@
 class RepuestosController < ApplicationController
   before_action :set_repuesto, only: [:show, :update, :destroy]
+  
 
   # GET /repuestos
   def index
     #response.set_header('a','b')
     headers_access_control
-    @repuestos = Repuesto.all
+    tipo= params["tipo"]
+    marca= params["marca"]
+    modelo= params["modelo"]
+    conditions={}
+    if tipo !=nil 
+      conditions.merge!(tipo: tipo)
+    end
+    if marca != nil 
+      conditions.merge!(marca: marca)
+    end   
+    if modelo !=nil
+      conditions.merge!(modelo: modelo)
+    end
+    if tipo && marca && modelo == nil
+      Rails.logger.info " index all"
+      @repuesto = Repuesto.all
+    else
+      @repuesto = Repuesto.where(conditions)
+    end 
 
-    render json: @repuestos
+
+    render json: @repuesto
   end
 
   # GET /repuestos/1
   def show
-    headers_access_control
+    Rails.logger.info "el id param es#{params[:id]}"  
+    id_val=params[:id]
     render json: @repuesto
   end
 
+  #GET /repuestos/show_type
+  def show_type
+    Rails.logger.info "paso por show tipe"
+    #repuesto=JSON.parse(request.body.read())
+    Rails.logger.info "el tipo es #{params["tipo"]}" 
+    #@repuesto
+    @repuesto = Repuesto.where(tipo: params["tipo"])
+    render json: @repuesto
+  end
+ 
   # POST /repuestos
   def create
       headers_access_control
+      Rails.logger.info "paso por create"
       repuesto=JSON.parse(request.body.read())
-    
       @repuesto = Repuesto.new(
         tipo:repuesto["tipo"],
         marca:repuesto["marca"],
@@ -29,12 +60,14 @@ class RepuestosController < ApplicationController
         stock:repuesto["stock"]
       )
     if  validations(repuesto) == true 
+      Rails.logger.info "entro a las validaciones"
       if @repuesto.save
         render json: @repuesto, status: :created, location: @repuesto
       else
         render json: @repuesto.errors, status: :unprocessable_entity
       end
     else 
+      Rails.logger.info "No paso validaciones"
       render json: @repuesto.errors, status: :bad_request
     end
   end
@@ -83,6 +116,9 @@ def headers_access_control
   headers['Access-Control-Allow-Headers'] = '*'
 end
 
+def id  
+end  
+
 #validations, validate if the hash meets the requirements
 def validations(repuesto)
   tipo = repuesto['tipo']
@@ -116,14 +152,19 @@ def valid_capital(capital)
 end
 
 def valid_tipo(tipo)
-  if tipo== ('Parabrisas' ||'Espejo retrovisor' || 'Limpiaparabrisas' || 'Radiador')
+  Rails.logger.info "entro a validar tipo"
+  Rails.logger.info "tipo es #{tipo}"
+  if tipo== 'Parabrisas' ||'Espejo retrovisor' || 'Limpiaparabrisas' || 'Radiador'
+    Rails.logger.info "validar tipo = true"
     return true
   else
+    Rails.logger.info "validar tipo = false"
     return false
   end  
 end
-
+# remplazar por case
 def valid_marca(tipo,marca)
+  Rails.logger.info "entro a validar marca"
     if tipo == 'Parabrisas'
       if marca == ('Citroen' || 'Swift')
         return true 
@@ -133,7 +174,7 @@ def valid_marca(tipo,marca)
     end
 
     if tipo == 'Espejo retrovisor'
-      if marca == ('Lael' || 'Vitaloni')
+      if marca == 'Lael' || 'Vitaloni'
         return true 
       else 
         return false 
@@ -141,7 +182,8 @@ def valid_marca(tipo,marca)
     end 
 
     if tipo == 'Limpiaparabrisas'
-      if marca == ('Lael' || 'Bosch')
+      Rails.logger.info "entro a limpiaparabrisas"
+      if marca == 'Lael' || 'Bosch'
         return true 
       else 
         return false 
@@ -149,7 +191,7 @@ def valid_marca(tipo,marca)
     end
 
     if tipo == 'Radiador'
-      if marca == ('Citroen' || 'Konas')
+      if marca == 'Citroen' || 'Konas'
         return true 
       else 
         return false 
@@ -192,5 +234,25 @@ Limpiaparabrisas:
 Lael, bosch 
 Radiador:
 Citroen, Konas
+
+  # GET /repuestos/1
+  def show
+    headers_access_control 
+    Rails.logger.info "el id param es#{params[:id]}"  
+    id_val=params[:id]
+    id_val=id_val.to_i
+    if id_val.is_number? 
+      if (id_val.is_a? Integer) 
+        Rails.logger.info "entro"
+        render json: @repuesto
+      else
+        Rails.logger.info "else else"
+        render json: @repuesto.errors, status: :bad_request
+      end
+    else 
+      Rails.logger.info "else"
+      render json: @repuesto.errors, status: :bad_request
+    end  
+  end
 =end
 # Parameters: {"tipo"=>"espejo", "marca"=>"bmw", "modelo"=>"z200", "precio"=>"300", "stock"=>"100", "repuesto"=>{"tipo"=>"espejo", "marca"=>"bmw", "modelo"=>"z200", "precio"=>"300", "stock"=>"100"}}
