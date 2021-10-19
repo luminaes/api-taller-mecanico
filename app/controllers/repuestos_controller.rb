@@ -10,6 +10,7 @@ class RepuestosController < ApplicationController
     marca= params["marca"]
     modelo= params["modelo"]
     conditions={}
+
     if tipo !=nil 
       conditions.merge!(tipo: tipo)
     end
@@ -139,22 +140,15 @@ def validations(repuesto)
   modelo = repuesto['modelo']
   precio = repuesto['precio']
   stock = repuesto['stock']
-  v = Array.new(5,false)
+  #v = Array.new(5,false)
     #aca van procedimientos validaciones
   #probar devover mensaje de error
-  v[0]=valid_tipo(tipo)
-  if v[0]==true 
-    v[1]=valid_marca(tipo,marca)
-    v[2]=!modelo.empty? 
-    v[3]= valid_precio(precio)
-    v[4]= valid_stock(stock)
-  end
-  if v[0] == true && v[1] == true && v[2] == true && v[3] == true && v[4] == true 
+  if valid_tipo(tipo) && valid_marca(tipo,marca) && !modelo.empty? && valid_precio(precio) && valid_stock(stock)
     return true
   else 
     return false
-  end  
-end  
+  end
+end 
 
 def valid_capital(capital)
   if capital == capital.capitalize
@@ -177,39 +171,42 @@ def valid_tipo(tipo)
 end
 # remplazar por case
 def valid_marca(tipo,marca)
-  Rails.logger.info "entro a validar marca"
     if tipo == 'Parabrisas'
-      if marca == ('Citroen' || 'Swift')
+      case marca
+      when  'Citroen' , 'Swift'
         return true 
-      else 
-        return false 
+      else
+        return false
       end 
-    end
+    end 
 
     if tipo == 'Espejo retrovisor'
-      if marca == 'Lael' || 'Vitaloni'
+      case marca
+      when  'Lael', 'Vitaloni'
         return true 
-      else 
-        return false 
-      end
+      else
+        return false
+      end 
     end 
 
     if tipo == 'Limpiaparabrisas'
-      Rails.logger.info "entro a limpiaparabrisas"
-      if marca == 'Lael' || 'Bosch'
+      case marca
+      when  'Lael', 'Bosch'
         return true 
-      else 
-        return false 
+      else
+        return false
       end 
     end
 
     if tipo == 'Radiador'
-      if marca == 'Citroen' || 'Konas'
+      case marca
+      when  'Citroen' , 'Konas'
         return true 
-      else 
-        return false 
+      else
+        return false
       end 
     end
+
 end
 
 def valid_precio(precio)
