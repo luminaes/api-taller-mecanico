@@ -6,11 +6,13 @@ class RepuestosController < ApplicationController
   def index
     #response.set_header('a','b')
     headers_access_control
+    #token =request.headers["nombre del header"]
+
     tipo= params["tipo"]
     marca= params["marca"]
     modelo= params["modelo"]
     conditions={}
-
+  
     if tipo !=nil 
       conditions.merge!(tipo: tipo)
     end
@@ -21,15 +23,16 @@ class RepuestosController < ApplicationController
       conditions.merge!(modelo: modelo)
     end
     Rails.logger.info "conditions es #{conditions}" 
+    
     if conditions == nil
       Rails.logger.info " index all"
       @repuesto = Repuesto.all
     else
       @repuesto = Repuesto.where(conditions)
     end 
-
-
     render json: @repuesto
+
+     
   end
 
   # GET /repuestos/1
@@ -106,6 +109,7 @@ class RepuestosController < ApplicationController
   end
 
   # DELETE /repuestos/2
+  headers_access_control
   def destroy
     @repuesto.destroy
   end
@@ -161,7 +165,7 @@ end
 def valid_tipo(tipo)
   Rails.logger.info "entro a validar tipo"
   Rails.logger.info "tipo es #{tipo}"
-  if tipo== 'Parabrisas' ||'Espejo retrovisor' || 'Limpiaparabrisas' || 'Radiador'
+  if tipo== 'Parabrisas' || tipo== 'Espejo retrovisor' || tipo== 'Limpiaparabrisas' || tipo== 'Radiador'
     Rails.logger.info "validar tipo = true"
     return true
   else
