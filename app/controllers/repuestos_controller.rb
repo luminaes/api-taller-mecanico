@@ -6,12 +6,13 @@ class RepuestosController < ApplicationController
   def index
     #response.set_header('a','b')
     headers_access_control
-    #token =request.headers["nombre del header"]
+    token =request.headers["Autorization"]
     tipo= params["tipo"]
     marca= params["marca"]
     modelo= params["modelo"]
     conditions={}
-  
+    Rails.logger.info "conditions es #{token}"
+
     if tipo !=nil 
       conditions.merge!(tipo: tipo)
     end
