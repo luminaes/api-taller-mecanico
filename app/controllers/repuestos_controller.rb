@@ -7,7 +7,6 @@ class RepuestosController < ApplicationController
     #response.set_header('a','b')
     headers_access_control
     #token =request.headers["nombre del header"]
-
     tipo= params["tipo"]
     marca= params["marca"]
     modelo= params["modelo"]
@@ -109,8 +108,9 @@ class RepuestosController < ApplicationController
   end
 
   # DELETE /repuestos/2
-  headers_access_control
+  
   def destroy
+    headers_access_control
     @repuesto.destroy
   end
 
@@ -133,9 +133,7 @@ def headers_access_control
   headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
   headers['Access-Control-Allow-Headers'] = '*'
 end
-
-def id  
-end  
+ 
 
 #validations, validate if the hash meets the requirements
 def validations(repuesto)
