@@ -91,8 +91,8 @@ class RepuestosController < ApplicationController
 
   # PATCH/PUT /repuestos/1
   def update
-    repuesto=JSON.parse(request.body.read())
     headers_access_control
+    repuesto=JSON.parse(request.body.read())
     if  validations(repuesto) == true
       if @repuesto.update(
         tipo:repuesto["tipo"],
@@ -109,7 +109,6 @@ class RepuestosController < ApplicationController
   end
 
   # DELETE /repuestos/2
-  
   def destroy
     headers_access_control
     @repuesto.destroy
@@ -131,7 +130,7 @@ end
 #Header Access-Control-Allow
 def headers_access_control
   headers['Access-Control-Allow-Origin'] = '*'
-  headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+  headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS, PATCH, DELETE'
   headers['Access-Control-Allow-Headers'] = '*'
 end
  
