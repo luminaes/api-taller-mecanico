@@ -129,10 +129,10 @@ end
 
 #Header Access-Control-Allow
 def headers_access_control
-  headers['Access-Control-Allow-Origin'] = '*'
-  headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, PATCH, OPTIONS'
+  headers['Access-Control-Allow-Headers'] = '*'
+  headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS, PATCH, PUT, DELETE'
   headers['Access-Control-Request-Method'] = '*'
-  headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  headers['Access-Control-Allow-Origin'] = '*'
 end
  
 
