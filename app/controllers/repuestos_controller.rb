@@ -6,6 +6,9 @@ class RepuestosController < ApplicationController
   def index
     #response.set_header('a','b')
     headers_access_control
+    http_request_header_keys = request.headers.env.keys.select do |header_name| 
+      header_name.match("^HTTP.*")
+    end
     token =request.headers["Autorization"]
     tipo= params["tipo"]
     marca= params["marca"]
@@ -229,7 +232,11 @@ def valid_stock(stock)
   end
 end
 
-
+def validate_token()
+  #https://concesionario-crud.herokuapp.com/my
+  #get 
+  #response.headers["X-AUTH-TOKEN"] = auth_token
+end
 
 =begin
 tipo: Parabrisas, Espejo retrovisor, Limpiaparabrisas, Radiador (todos con mayuscula en la primera letra)
