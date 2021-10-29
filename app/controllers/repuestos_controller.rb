@@ -1,14 +1,14 @@
 class RepuestosController < ApplicationController
   before_action :set_repuesto, only: [:show, :update, :destroy]
-  
+
+
 
   # GET /repuestos
   def index
     #response.set_header('a','b')
     headers_access_control
-    http_request_header_keys = request.headers.env.keys.select do |header_name| 
-      header_name.match("^HTTP.*")
-    end
+    global_request_logging
+    Rails.logger.info "end request headers"
     token =request.headers["Autorization"]
     tipo= params["tipo"]
     marca= params["marca"]
@@ -237,7 +237,24 @@ def validate_token()
   #get 
   #response.headers["X-AUTH-TOKEN"] = auth_token
 end
+def global_request_logging
+  http_request_header_keys = request.headers.env.keys.select{|header_name| header_name.match("^HTTP.*|^X-User.*")}
+  http_request_headers = request.headers.env.select{|header_name, header_value| http_request_header_keys.index(header_name)}
+  puts '*' * 40
+  pp request.method
+  pp request.url
+  pp request.remote_ip
+  pp ActionController::HttpAuthentication::Token.token_and_options(request)
 
+  http_request_header_keys.each do |key|
+    puts ["%20s" % key.to_s, ':', request.headers[key].inspect].join(" ")
+  end
+  puts '-' * 40
+  params.keys.each do |key|
+    puts ["%20s" % key.to_s, ':', params[key].inspect].join(" ")
+  end
+  puts '*' * 40
+end
 =begin
 tipo: Parabrisas, Espejo retrovisor, Limpiaparabrisas, Radiador (todos con mayuscula en la primera letra)
 marca: ver anexo marca, siempre plrimera letra mayuscula
