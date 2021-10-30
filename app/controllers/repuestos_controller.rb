@@ -133,10 +133,12 @@ end
 
 #Header Access-Control-Allow
 def headers_access_control
-  headers['Access-Control-Allow-Headers'] = '*'
-  headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS, PATCH, PUT, DELETE'
+  headers['Access-Control-Allow-Headers'] = 'Authorization, Content-Type'
+  headers['Access-Control-Allow-Methods'] = 'GET,POST,PUT,PATCH,OPTIONS,DELETE'
   headers['Access-Control-Request-Method'] = '*'
   headers['Access-Control-Allow-Origin'] = '*'
+  headers['Access-Control-Credentials'] = 'true'
+  headers['Access-Control-Max-Age'] = '10'
 end
  
 
