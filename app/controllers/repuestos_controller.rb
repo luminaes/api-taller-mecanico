@@ -137,7 +137,7 @@ def headers_access_control
   headers['Access-Control-Allow-Methods'] = 'GET,POST,PUT,PATCH,OPTIONS,DELETE'
   headers['Access-Control-Request-Method'] = '*'
   headers['Access-Control-Allow-Origin'] = '*'
-  headers['Access-Control-Credentials'] = 'false'
+  headers['Access-Control-Credentials'] = 'true'
   headers['Access-Control-Max-Age'] = '10'
 end
  
