@@ -7,7 +7,7 @@ class RepuestosController < ApplicationController
   def index
     #response.set_header('a','b')
     headers_access_control
-    global_request_logging
+    
     Rails.logger.info "end request headers"
     token =request.headers["Autorization"]
     tipo= params["tipo"]
@@ -95,6 +95,7 @@ class RepuestosController < ApplicationController
   # PATCH/PUT /repuestos/1
   def update
     headers_access_control
+    global_request_logging
     repuesto=JSON.parse(request.body.read())
     if  validations(repuesto) == true
       if @repuesto.update(
