@@ -135,7 +135,7 @@ end
 
 #Header Access-Control-Allow
 def headers_access_control
-  response.headers['Access-Control-Allow-Headers'] = 'access-token', 'expiry', 'token-type', 'Authorization'
+  response.headers['Access-Control-Allow-Headers'] = '*'
   headers['Access-Control-Allow-Methods'] = 'GET,POST,PUT,PATCH,OPTIONS,DELETE'
   headers['Access-Control-Request-Method'] = '*'
   headers['Access-Control-Allow-Origin'] = '*'
