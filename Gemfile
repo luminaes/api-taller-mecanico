@@ -41,3 +41,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 #gems of cors 
 gem 'rack-cors'
+
+#rest client gem 
+gem 'rest-client'

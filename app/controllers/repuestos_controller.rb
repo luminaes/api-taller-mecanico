@@ -7,14 +7,16 @@ class RepuestosController < ApplicationController
   def index
     #response.set_header('a','b')
     headers_access_control
-    
-    Rails.logger.info "end request headers"
     token =request.headers["Autorization"]
     tipo= params["tipo"]
     marca= params["marca"]
     modelo= params["modelo"]
     conditions={}
-    Rails.logger.info "conditions es #{token}"
+    #token= 'bearer'+token
+    Rails.logger.info "token es #{token}"
+
+  
+    #validate_token(token)
 
     if tipo !=nil 
       conditions.merge!(tipo: tipo)
@@ -133,13 +135,13 @@ end
 
 #Header Access-Control-Allow
 def headers_access_control
-  headers['Access-Control-Allow-Headers'] = 'Authorization, Content-Type'
+  response.headers['Access-Control-Allow-Headers'] = 'Authorization, Content-Type'
   headers['Access-Control-Allow-Methods'] = 'GET,POST,PUT,PATCH,OPTIONS,DELETE'
   headers['Access-Control-Request-Method'] = '*'
   headers['Access-Control-Allow-Origin'] = '*'
   headers['Access-Control-Credentials'] = 'true'
   headers['Access-Control-Max-Age'] = '10'
-end
+end 
  
 
 #validations, validate if the hash meets the requirements
@@ -235,10 +237,20 @@ def valid_stock(stock)
   end
 end
 
-def validate_token()
-  #https://concesionario-crud.herokuapp.com/my
+def validate_token(token)
+  require 'rest-client'
+  #url = 'https://api-taller-mecanico.herokuapp.com/repuestos'
+  url = 'https://concesionario-crud.herokuapp.com/me'
+  #response = RestClient.get(url, headers: {Autorization:token}) 
+  RestClient.get url , {:Authorization => token}
+
+  response.code
+  #Rails.logger.info "response es #{response}"
   #get 
   #response.headers["X-AUTH-TOKEN"] = auth_token
+  #response.set_header('HEADER NAME', 'HEADER VALUE')
+  #'https://concesionario-crud.herokuapp.com/me'
+
 end
 def global_request_logging
   http_request_header_keys = request.headers.env.keys.select{|header_name| header_name.match("^HTTP.*|^X-User.*")}
