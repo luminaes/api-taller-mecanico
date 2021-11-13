@@ -1,23 +1,18 @@
 class RepuestosController < ApplicationController
   before_action :set_repuesto, only: [:show, :update, :destroy]
 
-
-
   # GET /repuestos
   def index
     #response.set_header('a','b')
-    headers_access_control
-    token =request.headers["Autorization"]
+    #headers_access_control
+    #token =request.headers["Autorization"]
     tipo= params["tipo"]
     marca= params["marca"]
     modelo= params["modelo"]
     conditions={}
     #token= 'bearer'+token
-    Rails.logger.info "token es #{token}"
-
-  
+    #Rails.logger.info "token es #{token}"
     #validate_token(token)
-
     if tipo !=nil 
       conditions.merge!(tipo: tipo)
     end
@@ -35,9 +30,7 @@ class RepuestosController < ApplicationController
     else
       @repuesto = Repuesto.where(conditions)
     end 
-    render json: @repuesto
-
-     
+    render json: @repuesto 
   end
 
   # GET /repuestos/1
@@ -172,7 +165,7 @@ end
 def valid_tipo(tipo)
   Rails.logger.info "entro a validar tipo"
   Rails.logger.info "tipo es #{tipo}"
-  if tipo== 'Parabrisas' || tipo== 'Espejo retrovisor' || tipo== 'Limpiaparabrisas' || tipo== 'Radiador'
+  if tipo== 'Parabrisas' || tipo== 'Espejo retrovisor' || tipo== 'Radiador'
     Rails.logger.info "validar tipo = true"
     return true
   else
@@ -184,7 +177,7 @@ end
 def valid_marca(tipo,marca)
     if tipo == 'Parabrisas'
       case marca
-      when  'Citroen' , 'Swift'
+      when  'Citroen' , 'Lael'
         return true 
       else
         return false
@@ -193,7 +186,7 @@ def valid_marca(tipo,marca)
 
     if tipo == 'Espejo retrovisor'
       case marca
-      when  'Lael', 'Vitaloni'
+      when  'Citroen', 'Lael'
         return true 
       else
         return false
@@ -202,7 +195,7 @@ def valid_marca(tipo,marca)
 
     if tipo == 'Limpiaparabrisas'
       case marca
-      when  'Lael', 'Bosch'
+      when  'Citroen', 'Lael'
         return true 
       else
         return false
@@ -211,7 +204,7 @@ def valid_marca(tipo,marca)
 
     if tipo == 'Radiador'
       case marca
-      when  'Citroen' , 'Konas'
+      when  'Citroen' , 'Lael'
         return true 
       else
         return false
@@ -236,6 +229,11 @@ def valid_stock(stock)
     return false
   end
 end
+
+def valid_type()
+
+end
+
 
 def validate_token(token)
   require 'rest-client'
