@@ -76,6 +76,7 @@ class RepuestosController < ApplicationController
       )
 
     if valid_400(repuesto)  
+      Rails.logger.info "paso valid 400"
       if  validations(repuesto) == true 
         Rails.logger.info "entro a las validaciones"
         if @repuesto.save
@@ -88,6 +89,7 @@ class RepuestosController < ApplicationController
         render json: @repuesto.errors, status: :precondition_failed
       end
     else 
+      Rails.logger.info "no paso valid 400"
       render json: @repuesto.errors, status: :bad_request
     end
   end
@@ -189,7 +191,7 @@ def valid_marca(tipo,marca)
       end 
     end 
 
-    if tipo == 'Espejo retrovisor'
+    if tipo == 'Espejo'
       case marca
       when  'Citroen', 'Lael'
         return true 
