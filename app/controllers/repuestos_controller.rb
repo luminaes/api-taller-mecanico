@@ -112,7 +112,11 @@ class RepuestosController < ApplicationController
         else
           render json: @repuesto.errors, status: :unprocessable_entity
         end
+      else 
+        render json: @repuesto.errors, status: :unprocessable_entity
       end  
+    else
+      render json: @repuesto.errors, status: :bad_request 
     end
   end
 
