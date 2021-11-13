@@ -99,19 +99,21 @@ class RepuestosController < ApplicationController
     headers_access_control
     global_request_logging
     repuesto=JSON.parse(request.body.read())
-    if  validations(repuesto) == true
-      if @repuesto.update(
-        tipo:repuesto["tipo"],
-        marca:repuesto["marca"],
-        modelo:repuesto["modelo"],
-        precio:repuesto["precio"],
-        stock:repuesto["stock"] 
-      )
-        render json: @repuesto
-      else
-        render json: @repuesto.errors, status: :unprocessable_entity
-      end
-    end  
+    if valid_400(repuesto) 
+      if  validations(repuesto) == true
+        if @repuesto.update(
+          tipo:repuesto["tipo"],
+          marca:repuesto["marca"],
+          modelo:repuesto["modelo"],
+          precio:repuesto["precio"],
+          stock:repuesto["stock"] 
+        )
+          render json: @repuesto
+        else
+          render json: @repuesto.errors, status: :unprocessable_entity
+        end
+      end  
+    end
   end
 
   # DELETE /repuestos/2
