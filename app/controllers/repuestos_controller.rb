@@ -74,15 +74,20 @@ class RepuestosController < ApplicationController
         precio:repuesto["precio"],
         stock:repuesto["stock"]
       )
-    if  validations(repuesto) == true 
-      Rails.logger.info "entro a las validaciones"
-      if @repuesto.save
-        render json: @repuesto, status: :created, location: @repuesto
-      else
-        render json: @repuesto.errors, status: :unprocessable_entity
+
+    if valid_400(repuesto)  
+      if  validations(repuesto) == true 
+        Rails.logger.info "entro a las validaciones"
+        if @repuesto.save
+          render json: @repuesto, status: :created, location: @repuesto
+        else
+          render json: @repuesto.errors, status: :unprocessable_entity
+        end
+      else 
+        Rails.logger.info "No paso validaciones"
+        render json: @repuesto.errors, status: :precondition_failed
       end
     else 
-      Rails.logger.info "No paso validaciones"
       render json: @repuesto.errors, status: :bad_request
     end
   end
@@ -165,7 +170,7 @@ end
 def valid_tipo(tipo)
   Rails.logger.info "entro a validar tipo"
   Rails.logger.info "tipo es #{tipo}"
-  if tipo== 'Parabrisas' || tipo== 'Espejo retrovisor' || tipo== 'Radiador'
+  if tipo== 'Parabrisas' || tipo== 'Espejo' || tipo== 'Radiador'
     Rails.logger.info "validar tipo = true"
     return true
   else
@@ -230,10 +235,27 @@ def valid_stock(stock)
   end
 end
 
-def valid_type()
+def valid_400(repuesto)
+  tipo = repuesto['tipo']
+  marca = repuesto['marca']
+  modelo = repuesto['modelo']
+  precio = repuesto['precio']
+  stock = repuesto['stock']
 
+  if valid_str(tipo) && valid_str(tipo) && valid_str(marca) && !modelo.empty? && valid_precio(precio) && valid_stock(stock)
+    return true
+  else 
+    return false
+  end
 end
 
+def valid_str(str)
+  if str.kind_of? String
+    return true
+  else 
+    return false
+  end
+end
 
 def validate_token(token)
   require 'rest-client'
